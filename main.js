@@ -1,3 +1,5 @@
+//Fichier qui contient les fonctions et le gameloop qui sont utilisé uniquement pour le laby du joueur humain
+
 console.log("js loaded")
 
 const canvas = document.getElementById('canvasLeft')
