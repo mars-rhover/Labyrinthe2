@@ -29,8 +29,23 @@
     text-align: center;
   }
   
-  /* Style the image inside the centered container, if needed */
+
   .centered img {
     width: 150px;
     border-radius: 50%;
   }
+
+  /* Style for the starter page */
+  .center { 
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    padding-top: 2%;
+    
+}
+.center-vertically{
+    margin-top: 20%;
+    margin-bottom: 10%;
+    text-align: center;
+}
