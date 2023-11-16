@@ -11,10 +11,10 @@ let yIA=0;
 let vxIA= 5;
 let vyIA= 5;
 
-function drawIA(x,y){
+function drawIA(xIA,yIA){
     ctxIA.fillStyle = '#F9DC5C'
-    ctxIA.fillRect(x,y,roadWidth,roadWidth)
-    console.log(x,y)
+    ctxIA.fillRect(xIA,xIA,roadWidth,roadWidth)
+    //console.log(x,y)
 }
 
 function getExitPosition(){
@@ -36,7 +36,7 @@ function updateIA(){
     ctxIA.clearRect(0,0,canvasIA.width,canvasIA.height)
     //ctxIA.fillRect(x,y,100,100)
     renderMaze(ctxIA, mazeArray)
-    drawIA(x,y);
+    drawIA(xIA,yIA);
     requestAnimationFrame(updateIA)
 }
 
