@@ -6,7 +6,8 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
             y = y - roadWidth  
-            //console.log("notWall")  
+            countSteps++;
+            console.log("steps"+countSteps)  
         }
         else{
             rowNum = rowNum + 1
@@ -19,7 +20,8 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
             y = y + roadWidth
-            //console.log("notWall") 
+            countSteps++
+            console.log("steps"+countSteps)  
         }
         else{
             rowNum = rowNum -1
@@ -30,7 +32,12 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         colNum = colNum +1
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
-            x = x + roadWidth}
+            x = x + roadWidth
+            countSteps++
+            console.log("steps"+countSteps) 
+        
+        }
+            
             //console.log("notWall") }
         else{
             colNum = colNum -1
@@ -42,8 +49,9 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         colNum = colNum -1
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
-            x = x - roadWidth
-            //console.log("notWall") 
+            x = x - roadWidth //change display position of yellow square
+            countSteps++ //No of steps for stats 
+            console.log("steps"+countSteps)   
         }
         else{
             colNum = colNum +1

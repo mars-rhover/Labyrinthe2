@@ -11,6 +11,7 @@ let x=0; //actual start position of square in pixels
 let y=roadWidth;
 let colNum= 0;
 let rowNum= 1;
+let countSteps=0;
 
 
 function draw(x,y){
@@ -18,10 +19,40 @@ function draw(x,y){
     ctx.fillRect(x,y,roadWidth,roadWidth)
 }
 
-function getExitPosition(){
+function getExitPositionStatic(){ 
+    //a modifier
+    if (difficulty == 1){
+        x=0
+        y=0
+    }
+    if (difficulty == 2){
+        x=0
+        y=0
+    }
+    if (difficulty == 3){
+        x=0
+        y=0
+    }
+
+
 //to get exit position 
 }
-function getEnterPosition(){
+function getEnterPositionStatic(){
+    //a modifier
+    if (difficulty == 1){
+        x=0
+        y=0
+    }
+    if (difficulty == 2){
+        x=0
+        y=0
+    }
+    if (difficulty == 3){
+        x=0
+        y=0
+    }
+
+
 //to get position where it starts the maze
 }
 
