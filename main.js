@@ -4,6 +4,8 @@ console.log("js loaded")
 
 const canvas = document.getElementById('canvasLeft')
 const ctx = canvas.getContext('2d')
+const form = document.getElementById("formLabyrinthe").addEventListener("submit", formSubmit);
+
 let roadWidth = 600 / mazeArray.length
 let roadHeight = 600 / mazeArray.length
 
@@ -13,6 +15,19 @@ let colNum= 0;
 let rowNum= 1;
 let countSteps=0;
 
+function formSubmit(event) {
+    const inputs = document.getElementById("formLabyrinthe").elements;
+    const inputUsername = inputs[0].value;
+    const inputDifficulty = inputs[1].value;
+    const inputAlgo = inputs[2].value;
+
+    console.log(inputUsername)
+    console.log(inputDifficulty)
+    console.log(inputAlgo)
+    //TO continue
+    event.preventDefault();
+  }
+
 
 function draw(x,y){
     ctx.fillStyle = '#F9DC5C'
@@ -21,38 +36,10 @@ function draw(x,y){
 
 function getExitPositionStatic(){ 
     //a modifier
-    if (difficulty == 1){
-        x=0
-        y=0
-    }
-    if (difficulty == 2){
-        x=0
-        y=0
-    }
-    if (difficulty == 3){
-        x=0
-        y=0
-    }
-
-
 //to get exit position 
 }
 function getEnterPositionStatic(){
     //a modifier
-    if (difficulty == 1){
-        x=0
-        y=0
-    }
-    if (difficulty == 2){
-        x=0
-        y=0
-    }
-    if (difficulty == 3){
-        x=0
-        y=0
-    }
-
-
 //to get position where it starts the maze
 }
 
@@ -61,10 +48,8 @@ function getEnterPositionStatic(){
 
 
 
+
 function update(){
-    
-    
-    
     ctx.clearRect(0,0,canvas.width,canvas.height)
     //ctx.fillRect(x,y,100,100)
     renderMaze(ctx, mazeArray)
