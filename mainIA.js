@@ -20,9 +20,11 @@ function drawIA(xIA,yIA){
 function getExitPosition(){
 //to get exit position 
 }
+
 function getEnterPosition(){
 //to get position where it starts the maze
 }
+
 function isWall(){
     for(let i = 0; i<mazeWalls.length;i++){
     //logic for the collision 
