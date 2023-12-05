@@ -2,8 +2,7 @@ console.log("jsRIGHT loaded")
 
 const canvasIA = document.getElementById('canvasRight')
 const ctxIA = canvasIA.getContext('2d')
-//let roadWidth = canvasIA.width / mazeArray[0].length;
-//let roadHeight = canvasIA.height / mazeArray.length;
+
 
 let xIA=0;
 let yIA=1;
