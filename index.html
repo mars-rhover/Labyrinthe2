@@ -1,108 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu de Labyrinthe</title>
 
     <link rel="stylesheet" href="stylesheet.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
 </head>
+
 <body>
     <div>
-        <h1 class="center center-vertically" >Jeu de Labyrinthe</h1>
+        <h1 class="center center-vertically">Jeu de Labyrinthe</h1>
     </div>
     <!--Coté Humain ---------------------------------------------------------------------------------------------------------------->
     <div class="split left">
         <div class="centered">
-            <h2 style="color: aliceblue;" >Humain</h2>
+            <h2 style="color: aliceblue;">Humain</h2>
             <form id="formLabyrinthe" style="padding-bottom: 30px ;">
 
-            <div class="container text-center">
-                <div class="row align-items-center">
+                <div class="container text-center">
+                    <div class="row align-items-center">
 
-                  <div class="col" style="color:aliceblue">
-                     <!--input username -->
-                    <input type="text" name="username"  class="form-control" placeholder="e.g Nagai5" aria-label="Username"  required>
-                  </div>
+                        <div class="col" style="color:aliceblue">
+                            <!--input username -->
+                            <input type="text" name="username" class="form-control" placeholder="e.g Nagai5"
+                                aria-label="Username" required>
+                        </div>
 
-                  <div class="col" style="color:aliceblue">
-                    <!--Selection difficulty -->
-                    <select class="form-select" name="difficulty"  required>
-                        <option selected disabled value>Choose</option>
-                        <option value="1">Easy</option>
-                        <option value="2">Medium</option>
-                        <option value="3">Hard</option>
-                    </select>
-                  </div>
+                        <div class="col" style="color:aliceblue">
+                            <!--Selection difficulty -->
+                            <select class="form-select" name="difficulty" required>
+                                <option selected disabled value>Choose</option>
+                                <option value="1">Easy</option>
+                                <option value="2">Medium</option>
+                                <option value="3">Hard</option>
+                            </select>
+                        </div>
 
-                  <div class="col" style="color:aliceblue">
-                    <!--Selection of Algorithm -->
-                    <select class="form-select" name="algo" required>
-                        <option selected disabled value >Choose</option>
-                        <option value="1">Algo 1</option>
-                        <option value="2">Algo 2</option>
-                        <option value="3">Algo 3</option>
-                    </select>
-                  </div>
-                        <!--submit button -->
-                  <div class="col" style="color:aliceblue">
-                    <button class="btn btn-primary" type="submit">Start
-                    </button>
+                        <div class="col" style="color:aliceblue">
+                            <!--Selection of Algorithm -->
+                            <select class="form-select" name="algo" required>
+                                <option selected disabled value>Choose</option>
+                                <option value="1">Algo 1</option>
+                                <option value="2">Algo 2</option>
+                                <option value="3">Algo 3</option>
+                            </select>
+                        </div>
+                        <!--start button -->
+                        <div class="col" style="color:aliceblue">
+                            <button class="btn btn-primary" id="buttonStart" type="submit">Start
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                </div>
-              </div>
             </form>
-           
+
 
             <canvas id="canvasLeft" height="600px" width="600px"></canvas>
         </div>
     </div>
 
     <!--Coté IA ---------------------------------------------------------------------------------------------------------------->
-    
+
     <div class="split right">
         <div class="centered">
-            <p4>
-                IA
-            </p4>
+            <h2 style="color: rgb(17, 22, 26);">IA</h2>
 
+
+
+
+
+            <div class="container text-center" id="buttonsIA">
+                <div class="row align-items-center">
+                    <div class="col" style="color:rgb(171, 51, 155)">
+                        <button id="startButtonIA" class="btn btn-primary" type="button">Start BFS</button>
+                        </button>
+                        <div id="timerBFS">Temps BFS : <span id="timeBFS">0s</span></div>
+                    </div>
+
+                    <div class="col" style="color:rgb(171, 51, 155)">
+                        <button id="startButtonDFS" class="btn btn-primary" type="button">Start DFS</button>
+                        </button>
+                        <div id="timerDFS">Temps DFS : <span id="timeDFS">0s</span></div>
+                    </div>
+
+                    <div class="col" style="color:rgb(171, 51, 155)">
+                        <button id="startButtonAStar" class="btn btn-primary" type="button">A Star</button>
+                        </button>
+                        <div id="timerAStar">Temps A* : <span id="timeAStar">0s</span></div>
+                    </div>
+
+                    <div class="col" style="color:rgb(171, 51, 155)">
+                        <button id="startButtonDijkstra" class="btn btn-primary" type="button"> Dijkstra</button>
+                        </button>
+                        <div id="timerDijkstra">Temps  : <span id="timeDijkstra">0s</span></div>
+                    </div>
+                </div>
+            </div>
             <canvas id="canvasRight" height="600px" width="600px"></canvas>
-            <div id="buttonsIA">
-
-            <div class="col" style="color:rgb(171, 51, 155)">
-                <button id="startButtonIA" class="btn btn-primary" type="button">Start BFS</button>
-                </button>
-                <div id="timerBFS">Temps BFS : <span id="timeBFS">0s</span></div>
-            </div>
-            
-            <div class="col" style="color:rgb(171, 51, 155)">
-                <button id="startButtonDFS" class="btn btn-primary" type="button">Start DFS</button>
-                </button>
-                <div id="timerDFS">Temps DFS : <span id="timeDFS">0s</span></div>
-            </div>
-
-            <div class="col" style="color:rgb(171, 51, 155)">
-                <button id="startButtonAStar" class="btn btn-primary" type="button">A Star</button>
-                </button>
-                <div id="timerAStar">Temps A* : <span id="timeAStar">0s</span></div>
-            </div>
-            <div class="col" style="color:rgb(171, 51, 155)">
-                <button id="startButtonDijkstra" class="btn btn-primary" type="button"> Dijkstra</button>
-                </button>
-                <div id="timerDijkstra">Temps Dijkstra : <span id="timeDijkstra">0s</span></div>
-            </div>
-        </div>
-
         </div>
     </div>
-    
+
+    <script src="mazeArray30.js"></script>
     <script src="mazeArray51.js"></script>
+    <script src="mazeArray10.js"></script>
     <script src="inputHandler.js"></script>
     <script src="renderMaze.js"></script>
     <script src="main.js"></script>
     <script src="mainIA.js"></script>
-    
+
 </body>
+
 </html>

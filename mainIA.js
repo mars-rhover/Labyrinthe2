@@ -4,17 +4,18 @@ const canvasIA = document.getElementById('canvasRight')
 const ctxIA = canvasIA.getContext('2d')
 
 
-let xIA=0;
-let yIA=1;
-let vxIA= 5;
-let vyIA= 5;
+
+let xIA = 0;
+let yIA = 1;
+let vxIA = 5;
+let vyIA = 5;
 let solutionPath = [];
-let dfs=false;
-let bfs=false;
-let astar=false;
-let dikstra=false;
-let visitedX=0;
-let visitedY=0;
+let dfs = false;
+let bfs = false;
+let astar = false;
+let dikstra = false;
+let visitedX = 0;
+let visitedY = 0;
 let timeBFS = 0;
 let timeDFS = 0;
 let timeAStar = 0;
@@ -25,10 +26,21 @@ const visitedXY = new Set();
 
 
 
+
 //Handling the maze and coordinates
 
-function getExitPosition() {
-    return { x: 50, y: 49 };
+function getExitPosition(inputDifficulty) {
+    let exit = {};
+    if (inputDifficulty === '2') {
+
+        exit = { x: 29, y: 28 };
+    }
+    else if (inputDifficulty === '1') {
+        exit = { x: 9, y: 8 };
+    } else if (inputDifficulty === '3') {
+        exit = { x: 50, y: 49 };
+    }
+    return exit;
 }
 
 function getEnterPosition() {
@@ -59,6 +71,7 @@ function isWall(x, y) {
 // painting and updating maze
 
 function drawIA(xIA, yIA) {
+
     ctx.fillStyle = '#F9DC5C'
     ctxIA.fillRect(x * roadWidth, y * roadHeight, roadWidth, roadHeight);
 }
@@ -97,7 +110,7 @@ function parcourirSet(set) {
             index++;
             setTimeout(() => {
                 ctxIA.clearRect(0, 0, canvasIA.width, canvasIA.height);
-                renderMaze(ctxIA, mazeArray); // Redraw the maze
+                renderMazeIA(ctxIA, mazeArray); // Redraw the maze
                 drawVisitedCells(); // Draw visited cells
             }, 500); // Adjust the delay time here (in milliseconds)
             setTimeout(drawNext, 500); // Draw the next cell after a delay
@@ -114,24 +127,36 @@ function drawVisitedCells() {
         if (index < visitedXY.size) {
             const cell = Array.from(visitedXY)[index];
             const [x, y] = cell.split('-');
-            ctxIA.fillRect(x * roadWidth, y * roadHeight, roadWidth, roadHeight);
+            ctxIA.fillRect(x * roadWidth, y * roadWidth, roadWidth, roadWidth);
             index++;
             setTimeout(drawNext, 10); // Adjust the delay time here (in milliseconds)
         }
     }
 
     drawNext();
-isPrinting=false;
+    isPrinting = false;
 
 
 }
 
+
+
+
+
+
+
+
+
 function updateIA() {
+ 
+    console.log("exit x = " +getExitPosition(inputDifficulty).x);
+    console.log("exit y = "+ getExitPosition(inputDifficulty).y);
+
     ctxIA.clearRect(0, 0, canvasIA.width, canvasIA.height);
-    renderMaze(ctxIA, mazeArray); // Redraw the maze
+    renderMazeIA(ctxIA, mazeArray); // Redraw the maze
 
     drawVisitedCells(); // Draw visited cells
-    
+
     // Delay drawing the solution path after visited cells are drawn
     setTimeout(() => {
         console.log("Drawing solution");
@@ -139,28 +164,6 @@ function updateIA() {
     }, visitedXY.size * 20); // Adjust the delay time here (in milliseconds)
 }
 
-//---------------------------------------------------------------------------------------------
-
-//Switching mazes
-function formSubmit(event) {
-    const formData = new FormData(document.getElementById('formLabyrinthe'));
-    const mazeSelection = formData.get('difficulty');
-
-    // Assign the selected maze to the mazeArray variable
-    if (mazeSelection === '1') {
-        mazeArray = mazeArray1; // Assign maze array 1
-    } else if (mazeSelection === '2') {
-        mazeArray = mazeArray2; // Assign maze array 2
-    } else if (mazeSelection === '3') {
-        mazeArray = mazeArray3; // Assign maze array 3
-    }
-
-    // Solve the maze when the form is submitted
-   // const solutionPath = solveMazeBFS();
-  
-
-    event.preventDefault();
-}
 
 
 //---------------------------------------------------------------------------------------------
@@ -181,24 +184,24 @@ function solveMazeBFS() {
         const { x, y, path } = current;
 
         // Check if reached the exit
-       // Check if reached the exit
-if (x === getExitPosition().x && y === getExitPosition().y) {
-
-    const endTime = performance.now(); // Record the end time when the solution is found
-    const elapsedTime = endTime - startTime;
-    return { path: path, time: elapsedTime };
-}
+        // Check if reached the exit
+        if (x === getExitPosition(inputDifficulty).x && y === getExitPosition(inputDifficulty).y) {
+            console.log("end BFS");
+            const endTime = performance.now(); // Record the end time when the solution is found
+            const elapsedTime = endTime - startTime;
+            return { path: path, time: elapsedTime };
+        }
 
 
         // Check if the current cell has been visited
         if (!visited.has(`${x}-${y}`) && !isWall(x * roadWidth, y * roadHeight)) {
-            console.log("ADDING ",`${x}-${y}`);
-            
+            console.log("ADDING ", `${x}-${y}`);
+
             visited.add(`${x}-${y}`);
             visitedXY.add(`${x}-${y}`);
-           
-               
-            
+
+
+
 
             // Check adjacent cells (up, down, left, right)
             const directions = [
@@ -234,7 +237,7 @@ if (x === getExitPosition().x && y === getExitPosition().y) {
     // No solution found
     return { path: [], time: 0 };
 }
-  
+
 
 function solveMazeDFS() {
     console.log("STARTING DFS");
@@ -246,10 +249,10 @@ function solveMazeDFS() {
         const { x, y, path } = current;
 
         // Check if reached the exit
-        if (x === getExitPosition().x && y === getExitPosition().y) {
+        if (x === getExitPosition(inputDifficulty).x && y === getExitPosition(inputDifficulty).y) {
             const endTime = performance.now(); // Record the end time when the solution is found
-    const elapsedTime = endTime - startTime;
-    return { path: path, time: elapsedTime };
+            const elapsedTime = endTime - startTime;
+            return { path: path, time: elapsedTime };
         }
 
         // Check if the current cell has been visited
@@ -303,7 +306,7 @@ function solveMazeAStar() {
         const { x, y, path } = current;
 
         // Check if reached the exit
-        if (x === getExitPosition().x && y === getExitPosition().y) {
+        if (x === getExitPosition(inputDifficulty).x && y === getExitPosition(inputDifficulty).y) {
             const endTime = performance.now(); // Record the end time when the solution is found
             const elapsedTime = endTime - startTime;
             return { path: path, time: elapsedTime };
@@ -363,7 +366,7 @@ function solveMazeDijkstra() {
         const { x, y, path, cost } = current;
 
         // Check if reached the exit
-        if (x === getExitPosition().x && y === getExitPosition().y) {
+        if (x === getExitPosition(inputDifficulty).x && y === getExitPosition(inputDifficulty).y) {
             const endTime = performance.now(); // Record the end time when the solution is found
             const elapsedTime = endTime - startTime;
             return { path: path, time: elapsedTime };
@@ -483,8 +486,8 @@ class MinHeap {
 
 function heuristic(x, y) {
     // Define your heuristic function here (e.g., Manhattan distance)
-    const dx = Math.abs(x - getExitPosition().x);
-    const dy = Math.abs(y - getExitPosition().y);
+    const dx = Math.abs(x - getExitPosition(inputDifficulty).x);
+    const dy = Math.abs(y - getExitPosition(inputDifficulty).y);
     return dx + dy;
 }
 
@@ -495,20 +498,20 @@ function heuristic(x, y) {
 // Calls DFS
 const startButtonDFS = document.getElementById('startButtonDFS');
 startButtonDFS.addEventListener('click', () => {
-    
-    dfs=true;
-    dikstra=false;
-    astar=false;
-    bfs=false;
+
+    dfs = true;
+    dikstra = false;
+    astar = false;
+    bfs = false;
     visitedXY.clear();
     solutionPath = [];
     const { path, time } = solveMazeDFS();
     console.log('Solution Path:', path);
-    solutionPath =path;
+    solutionPath = path;
     document.getElementById('timerDFS').textContent = time + "ms";
-    
+
     updateIA(); // Render DFS solution on the canvas
-    
+
 });
 
 
@@ -516,22 +519,22 @@ startButtonDFS.addEventListener('click', () => {
 const startButtonIA = document.getElementById('startButtonIA');
 
 startButtonIA.addEventListener('click', () => {
-    bfs=true;
-    dfs=false;
-    dikstra=false;
-    astar=false;
-    
+    bfs = true;
+    dfs = false;
+    dikstra = false;
+    astar = false;
+
     visitedXY.clear();
     solutionPath = [];
     // Solve the maze using BFS and get the solution path and time
     const { path, time } = solveMazeBFS();
     console.log('Solution Path:', path);
-    solutionPath =path;
+    solutionPath = path;
     document.getElementById('timerBFS').textContent = time + "ms";
     console.log('Time taken:', time.toFixed(3), 'milliseconds'); // Log the time taken
 
     // Stop the BFS timer
-    
+
     updateIA(); // Render the solution path
 });
 
@@ -541,20 +544,20 @@ startButtonIA.addEventListener('click', () => {
 const startButtonAStar = document.getElementById('startButtonAStar');
 
 startButtonAStar.addEventListener('click', () => {
-    
-    astar=true;
-    dikstra=false;
-    bfs=false;
-    dfs=false;
+
+    astar = true;
+    dikstra = false;
+    bfs = false;
+    dfs = false;
     visitedXY.clear();
     solutionPath = [];
     const { path, time } = solveMazeAStar();
     console.log('Solution Path:', path);
-    solutionPath =path;
+    solutionPath = path;
     document.getElementById('timerAStar').textContent = time + " ms";
-  
+
     updateIA(); // Render A* search solution on the canvas
-   
+
 });
 
 
@@ -562,20 +565,32 @@ startButtonAStar.addEventListener('click', () => {
 const startButtonDijkstra = document.getElementById('startButtonDijkstra');
 
 startButtonDijkstra.addEventListener('click', () => {
-   
-    dikstra=true;
-    astar=false;
-    bfs=false;
-    dfs=false;
+
+    dikstra = true;
+    astar = false;
+    bfs = false;
+    dfs = false;
     visitedXY.clear();
     solutionPath = [];
     const { path, time } = solveMazeDijkstra();
     console.log('Solution Path:', path);
-    solutionPath =path;
+    solutionPath = path;
     document.getElementById('timerDijkstra').textContent = time + " ms";
 });
 
 updateIA();
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

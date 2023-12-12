@@ -4,60 +4,99 @@ console.log("js loaded")
 
 const canvas = document.getElementById('canvasLeft')
 const ctx = canvas.getContext('2d')
+
+let mazeArray = [];
+
 const form = document.getElementById("formLabyrinthe").addEventListener("submit", formSubmit);
 
-let roadWidth = 600 / mazeArray.length
-let roadHeight = 600 / mazeArray.length
 
-let x=0; //actual start position of square in pixels
-let y=roadWidth;
+
+
+let mazeHumain;
+let mazeIA;
+
+
+let roadHeight = 0; //Height of rectangle
+let roadWidth = 0; ////Width of rectangle
+
+let y = 0; //Starting x position of the rectangle
+let x = 0;//Starting y position of the rectangle
+let countSteps = 0;
 let colNum= 0;
 let rowNum= 1;
-let countSteps=0;
+let endPositionX = 0;
+let endPositionY = 0;
+let inputUsername=0;
+let inputDifficulty=0;
+let inputAlgo=0;
 
 function formSubmit(event) {
+
+
+
     const inputs = document.getElementById("formLabyrinthe").elements;
-    const inputUsername = inputs[0].value;
-    const inputDifficulty = inputs[1].value;
-    const inputAlgo = inputs[2].value;
+     inputUsername = inputs[0].value;
+     inputDifficulty = inputs[1].value;
+     inputAlgo = inputs[2].value;
 
-    console.log(inputUsername)
-    console.log(inputDifficulty)
-    console.log(inputAlgo)
-    //TO continue
+    mazeDifficulty(inputDifficulty);
+
     event.preventDefault();
-  }
+
+    roadWidth = 600 / mazeArray.length
+    roadHeight = 600 / mazeArray.length
+    y = roadWidth;
+    x = 0; //actual start position of square in pixels
+
+    endPositionX = 600 - roadWidth;
+    endPositionY = 600 - (2 * roadWidth);
+  
+    countSteps = 0;
+
+    colNum= 0;
+    rowNum= 1;
 
 
-function draw(x,y){
+    updateIA()
+    update();
+
+}
+
+function mazeDifficulty(inputDifficulty) {
+    if (inputDifficulty === "1") {
+        mazeArray = mazeArray10
+    } else if (inputDifficulty === "2") {
+        mazeArray = mazeArray30
+    } else if (inputDifficulty === "3") {
+        mazeArray = mazeArray51
+    }
+}
+
+
+function draw(x, y, endPositionX, endPositionY) {
     ctx.fillStyle = '#F9DC5C'
-    ctx.fillRect(x,y,roadWidth,roadWidth)
+    ctx.fillRect(x, y, roadWidth, roadWidth)
+    ctx.fillRect(endPositionX, endPositionY, roadWidth, roadWidth)
 }
 
-function getExitPositionStatic(){ 
-    //a modifier
-//to get exit position 
+function detectEndGame(inputDifficulty,colNum){
+    if (inputDifficulty==='3' && colNum===50 ){
+        console.log("End Game")
+    }
+    if (inputDifficulty==='2' && colNum===29 ){
+        console.log("End Game")
+    }
+    if (inputDifficulty==='1' && colNum===9 ){
+        console.log("End Game")
+    }
 }
-function getEnterPositionStatic(){
-    //a modifier
-//to get position where it starts the maze
-}
 
 
-
-
-
-
-
-function update(){
-    ctx.clearRect(0,0,canvas.width,canvas.height)
-    //ctx.fillRect(x,y,100,100)
-    renderMaze(ctx, mazeArray)
-    draw(x,y);
+function update() {
+    detectEndGame(inputDifficulty,colNum);
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    renderMazeHumain(ctx, mazeArray)
+    draw(x, y, endPositionX, endPositionY);
     requestAnimationFrame(update)
 }
 
-update()
-
-//for(let i = 0; i<mazeWalls.length;i++)
-  //  console.log(mazeWalls[i])

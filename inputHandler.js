@@ -7,7 +7,8 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         if (mazeArray[rowNum][colNum]===0){
             y = y - roadWidth  
             countSteps++;
-            console.log("steps"+countSteps)  
+            console.log("row"+rowNum) 
+            console.log("steps"+colNum)  
         }
         else{
             rowNum = rowNum + 1
@@ -21,7 +22,8 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         if (mazeArray[rowNum][colNum]===0){
             y = y + roadWidth
             countSteps++
-            console.log("steps"+countSteps)  
+            console.log("row"+rowNum) 
+            console.log("steps"+colNum)  
         }
         else{
             rowNum = rowNum -1
@@ -34,7 +36,8 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         if (mazeArray[rowNum][colNum]===0){
             x = x + roadWidth
             countSteps++
-            console.log("steps"+countSteps) 
+            console.log("row"+rowNum) 
+            console.log("steps"+colNum) 
         
         }
             
@@ -51,7 +54,8 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         if (mazeArray[rowNum][colNum]===0){
             x = x - roadWidth //change display position of yellow square
             countSteps++ //No of steps for stats 
-            console.log("steps"+countSteps)   
+            console.log("row"+rowNum) 
+            console.log("steps"+colNum)  
         }
         else{
             colNum = colNum +1
