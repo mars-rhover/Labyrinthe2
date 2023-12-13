@@ -23,7 +23,7 @@
             <form id="formLabyrinthe" style="padding-bottom: 30px ;">
 
                 <div class="container text-center">
-                    <div class="row align-items-center">
+                    <div class="row align-items-left">
 
                         <div class="col" style="color:aliceblue">
                             <!--input username -->
@@ -41,15 +41,12 @@
                             </select>
                         </div>
 
-                        <div class="col" style="color:aliceblue">
-                            <!--Selection of Algorithm -->
-                            <select class="form-select" name="algo" required>
-                                <option selected disabled value>Choose</option>
-                                <option value="1">Algo 1</option>
-                                <option value="2">Algo 2</option>
-                                <option value="3">Algo 3</option>
-                            </select>
-                        </div>
+                        <!--Timer -->
+                        
+                        <div class="col" style="color:aliceblue" >Temps : <span id="timerHumain">0s</span></div>
+
+
+
                         <!--start button -->
                         <div class="col" style="color:aliceblue">
                             <button class="btn btn-primary" id="buttonStart" type="submit">Start

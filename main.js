@@ -10,11 +10,11 @@ let mazeArray = [];
 const form = document.getElementById("formLabyrinthe").addEventListener("submit", formSubmit);
 
 
-
+let endGame=false;
 
 let mazeHumain;
 let mazeIA;
-
+let secondesHumain=0;
 
 let roadHeight = 0; //Height of rectangle
 let roadWidth = 0; ////Width of rectangle
@@ -28,7 +28,6 @@ let endPositionX = 0;
 let endPositionY = 0;
 let inputUsername=0;
 let inputDifficulty=0;
-let inputAlgo=0;
 
 function formSubmit(event) {
 
@@ -37,7 +36,7 @@ function formSubmit(event) {
     const inputs = document.getElementById("formLabyrinthe").elements;
      inputUsername = inputs[0].value;
      inputDifficulty = inputs[1].value;
-     inputAlgo = inputs[2].value;
+  
 
     mazeDifficulty(inputDifficulty);
 
@@ -79,21 +78,22 @@ function draw(x, y, endPositionX, endPositionY) {
     ctx.fillRect(endPositionX, endPositionY, roadWidth, roadWidth)
 }
 
-function detectEndGame(inputDifficulty,colNum){
-    if (inputDifficulty==='3' && colNum===50 ){
-        console.log("End Game")
-    }
-    if (inputDifficulty==='2' && colNum===29 ){
-        console.log("End Game")
-    }
-    if (inputDifficulty==='1' && colNum===9 ){
-        console.log("End Game")
-    }
-}
 
+function updateTimerHumain() {
+    document.getElementById('timerHumain').innerHTML = secondesHumain++ + "ms";
+  }
 
 function update() {
-    detectEndGame(inputDifficulty,colNum);
+    if ((inputDifficulty==='3' && colNum===50 )|| (inputDifficulty==='2' && colNum===29) || (inputDifficulty==='1' && colNum===9)) {
+        endGame=true;
+    }else{
+        updateTimerHumain() 
+        endGame=false;
+    }
+    console.log(endGame)
+   
+    
+  
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     renderMazeHumain(ctx, mazeArray)
     draw(x, y, endPositionX, endPositionY);

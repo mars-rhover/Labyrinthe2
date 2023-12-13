@@ -26,7 +26,6 @@ const visitedXY = new Set();
 
 
 
-
 //Handling the maze and coordinates
 
 function getExitPosition(inputDifficulty) {
@@ -143,22 +142,17 @@ function drawVisitedCells() {
 
 
 
-
-
-
-
 function updateIA() {
- 
-    console.log("exit x = " +getExitPosition(inputDifficulty).x);
-    console.log("exit y = "+ getExitPosition(inputDifficulty).y);
+    console.log("exit x = " + getExitPosition(inputDifficulty).x);
+    console.log("exit y = " + getExitPosition(inputDifficulty).y);
 
     ctxIA.clearRect(0, 0, canvasIA.width, canvasIA.height);
     renderMazeIA(ctxIA, mazeArray); // Redraw the maze
 
     drawVisitedCells(); // Draw visited cells
-
     // Delay drawing the solution path after visited cells are drawn
     setTimeout(() => {
+        
         console.log("Drawing solution");
         drawSolutionPath(solutionPath);
     }, visitedXY.size * 20); // Adjust the delay time here (in milliseconds)
@@ -576,9 +570,11 @@ startButtonDijkstra.addEventListener('click', () => {
     console.log('Solution Path:', path);
     solutionPath = path;
     document.getElementById('timerDijkstra').textContent = time + " ms";
+    updateIA();
 });
 
-updateIA();
+
+
 
 
 
