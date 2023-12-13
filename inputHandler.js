@@ -1,7 +1,7 @@
 document.addEventListener("keydown", function(e){ // Code sers à bouger et imp aussi le collision manager 
     //A OPTIMISER
 
-    if (e.code == "KeyW"){
+    if (e.code == "ArrowUp"){
         rowNum = rowNum -1
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
@@ -15,7 +15,7 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
             //console.log("isWall")}
     } } //up 
     
-    if (e.code == "KeyS"){
+    if (e.code == "ArrowDown"){
         
         rowNum = rowNum +1
         console.log(rowNum, colNum)
@@ -30,7 +30,7 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
             //console.log("isWall")}
     }  //down 
     }
-    if (e.code == "KeyD"){
+    if (e.code == "ArrowRight"){
         colNum = colNum +1
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
@@ -48,7 +48,7 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
         }
     } // left
 
-    if (e.code == "KeyA"){
+    if (e.code == "ArrowLeft"){
         colNum = colNum -1
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
