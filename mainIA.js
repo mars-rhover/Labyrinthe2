@@ -14,14 +14,14 @@ let dfs = false;
 let bfs = false;
 let astar = false;
 let dikstra = false;
-let manhattan=false;
+let greedy=false;
 let visitedX = 0;
 let visitedY = 0;
 let timeBFS = 0;
 let timeDFS = 0;
 let timeAStar = 0;
 let timeDijkstra = 0;
-let timeManhattan=0;
+let timerGreedy=0;
 const visitedXY = new Set();
 
 
@@ -84,25 +84,41 @@ function tracePath(path) {
         drawIA(x, y);
     }
 }
+
 function drawSolutionPath(path) {
-    if (dfs == true) {
-        ctxIA.fillStyle = '#ff71ce';
-    } else if (bfs == true) {
-        ctxIA.fillStyle = '#01cdfe';
-    } else if (astar == true) {
-        ctxIA.fillStyle = '#05ffa1';
-    } else if (dikstra) {
-        ctxIA.fillStyle = '#b967ff';
-    }
-    else if (manhattan) {
-        ctxIA.fillStyle = '#531eff';
+    let index = 0;
+
+    console.log("DRAWING SOLUTION PATH", path);
+
+    function drawNext() {
+        if (index < path.length) {
+            const { x, y } = path[index];
+
+            // Définir la couleur en fonction de l'algorithme utilisé
+            if (dfs) {
+                ctxIA.fillStyle = 'red';
+            } else if (bfs) {
+                ctxIA.fillStyle = 'black';
+            } else if (astar) {
+                ctxIA.fillStyle = 'green';
+            } else if (dikstra) {
+                ctxIA.fillStyle = 'yellow';
+            }
+            else if (greedy) {
+                ctxIA.fillStyle = 'blue';
+            }
+
+            // Dessiner le nœud
+            ctxIA.fillRect(x * roadWidth, y * roadHeight, roadWidth, roadHeight);
+            
+            index++;
+            setTimeout(drawNext, 50); // Ajuster le délai ici
+        }
     }
 
-    for (let i = 0; i < path.length; i++) {
-        const { x, y } = path[i];
-        ctxIA.fillRect(x * roadWidth, y * roadHeight, roadWidth, roadHeight);
-    }
+    drawNext();
 }
+
 function parcourirSet(set) {
     let index = 0;
 
@@ -110,21 +126,21 @@ function parcourirSet(set) {
         if (index < set.length) {
             const [x, y] = set[index].split('-');
             ctxIA.fillRect(x * roadWidth, y * roadHeight, roadWidth, roadHeight);
-            visitedXY.add(set[index]); // Add to visited set
+            visitedXY.add(set[index]);
             index++;
             setTimeout(() => {
                 ctxIA.clearRect(0, 0, canvasIA.width, canvasIA.height);
-                renderMazeIA(ctxIA, mazeArray); // Redraw the maze
-                drawVisitedCells(); // Draw visited cells
-            }, 10); // Adjust the delay time here (in milliseconds)
-            setTimeout(drawNext, 10); // Draw the next cell after a delay
+                renderMazeIA(ctxIA, mazeArray);
+                drawVisitedCells();
+            }, 500);
+            setTimeout(drawNext, 500);
         }
     }
 
     drawNext();
 }
-function drawVisitedCells() {
-    ctxIA.fillStyle = '#F9DC5C'; // Change color as needed
+function drawVisitedCells(callback) {
+    ctxIA.fillStyle = '#F9DC5C';
     let index = 0;
 
     function drawNext() {
@@ -133,19 +149,16 @@ function drawVisitedCells() {
             const [x, y] = cell.split('-');
             ctxIA.fillRect(x * roadWidth, y * roadWidth, roadWidth, roadWidth);
             index++;
-            setTimeout(drawNext, 1); // Adjust the delay time here (in milliseconds)
+            setTimeout(drawNext, 10);
+        } else {
+            if (callback) {
+                callback();
+            }
         }
     }
 
     drawNext();
-    isPrinting = false;
-
-
 }
-
-
-
-
 
 function updateIA() {
     console.log("exit x = " + getExitPosition(inputDifficulty).x);
@@ -154,21 +167,16 @@ function updateIA() {
     ctxIA.clearRect(0, 0, canvasIA.width, canvasIA.height);
     renderMazeIA(ctxIA, mazeArray); // Redraw the maze
 
-    drawVisitedCells(); // Draw visited cells
-    // Delay drawing the solution path after visited cells are drawn
-    setTimeout(() => {
-        
+    // Draw visited cells and then draw the solution path
+    drawVisitedCells(() => {
         console.log("Drawing solution");
         drawSolutionPath(solutionPath);
-    }, visitedXY.size * 40); // Adjust the delay time here (in milliseconds)
+    });
 }
-
-
 
 //---------------------------------------------------------------------------------------------
 
 // ALL FOUR AI ALGORITHMS
-
 
 function solveMazeBFS() {
     console.log("STARTING BFS");
@@ -489,20 +497,25 @@ function heuristic(x, y) {
     const dy = Math.abs(y - getExitPosition(inputDifficulty).y);
     return dx + dy;
 }
-function solveMazeManhattan() {
-    console.log("STARTING Manhattan Distance Algorithm");
-    const openSet = [{ x: getEnterPosition().x, y: getEnterPosition().y, path: [], cost: 0 }];
+
+function solveMazeGreedyBestFirst() {
+    console.log("STARTING Greedy Best-First Search");
+    const openSet = [{ x: getEnterPosition().x, y: getEnterPosition().y, path: [] }];
     const closedSet = new Set();
     const startTime = performance.now();
 
     while (openSet.length > 0) {
-        openSet.sort((a, b) => a.cost - b.cost);
-        const current = openSet.shift();
-        const { x, y, path, cost } = current;
+        // Trier l'ensemble ouvert en fonction de la distance heuristique à la sortie
+        openSet.sort((a, b) => heuristic(a.x, a.y) - heuristic(b.x, b.y));
 
+        const current = openSet.shift();
+        const { x, y, path } = current;
+
+        // Vérifier si on a atteint la sortie
         if (x === getExitPosition(inputDifficulty).x && y === getExitPosition(inputDifficulty).y) {
             const endTime = performance.now();
             const elapsedTime = endTime - startTime;
+            console.log('Solution Path:', path);
             return { path: path, time: elapsedTime };
         }
 
@@ -511,24 +524,31 @@ function solveMazeManhattan() {
             closedSet.add(currentPos);
             visitedXY.add(currentPos);
 
+            // Vérifier les cellules adjacentes (haut, bas, gauche, droite)
             const directions = [
-                { dx: 0, dy: -1 }, // up
-                { dx: 0, dy: 1 }, // down
-                { dx: -1, dy: 0 }, // left
-                { dx: 1, dy: 0 }  // right
+                { dx: 0, dy: -1 }, // haut
+                { dx: 0, dy: 1 },  // bas
+                { dx: -1, dy: 0 }, // gauche
+                { dx: 1, dy: 0 }   // droite
             ];
 
             for (const dir of directions) {
                 const nextX = x + dir.dx;
                 const nextY = y + dir.dy;
 
-                if (nextX >= 0 && nextX < mazeArray[0].length && nextY >= 0 && nextY < mazeArray.length && mazeArray[nextY][nextX] === 0) {
-                    const newCost = cost + 1 + manhattanDistance(nextX, nextY, getExitPosition(inputDifficulty).x, getExitPosition(inputDifficulty).y);
+                // Vérifier si la cellule suivante est dans les limites
+                if (
+                    nextX >= 0 &&
+                    nextX < mazeArray[0].length &&
+                    nextY >= 0 &&
+                    nextY < mazeArray.length &&
+                    mazeArray[nextY][nextX] === 0 &&
+                    !closedSet.has(`${nextX}-${nextY}`)
+                ) {
                     openSet.push({
                         x: nextX,
                         y: nextY,
-                        path: path.concat({ x: nextX, y: nextY }),
-                        cost: newCost
+                        path: path.concat({ x: nextX, y: nextY })
                     });
                 }
             }
@@ -538,12 +558,9 @@ function solveMazeManhattan() {
     return { path: [], time: 0 };
 }
 
-function manhattanDistance(x1, y1, x2, y2) {
-    return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-}
+
 //---------------------------------------------------------------------------------------------
 // DOM Buttons linked to the HTML that you made (Rohini)
-
 
 // Calls DFS
 const startButtonDFS = document.getElementById('startButtonDFS');
@@ -553,7 +570,7 @@ startButtonDFS.addEventListener('click', () => {
     dikstra = false;
     astar = false;
     bfs = false;
-    manhattan=false;
+    greedy=false;
     visitedXY.clear();
     solutionPath = [];
     const { path, time } = solveMazeDFS();
@@ -574,7 +591,7 @@ startButtonIA.addEventListener('click', () => {
     dfs = false;
     dikstra = false;
     astar = false;
-    manhattan=false;
+    greedy=false;
     visitedXY.clear();
     solutionPath = [];
     // Solve the maze using BFS and get the solution path and time
@@ -600,7 +617,7 @@ startButtonAStar.addEventListener('click', () => {
     dikstra = false;
     bfs = false;
     dfs = false;
-    manhattan=false;
+    greedy=false;
     visitedXY.clear();
     solutionPath = [];
     const { path, time } = solveMazeAStar();
@@ -622,7 +639,7 @@ startButtonDijkstra.addEventListener('click', () => {
     astar = false;
     bfs = false;
     dfs = false;
-    manhattan=false;
+    greedy=false;
     visitedXY.clear();
     solutionPath = [];
     const { path, time } = solveMazeDijkstra();
@@ -632,34 +649,17 @@ startButtonDijkstra.addEventListener('click', () => {
     updateIA();
 });
 
-
-
-//calls Manhattan 
-const startButtonManhattan = document.getElementById('startButtonManhattan');
-startButtonManhattan.addEventListener('click', () => {
-    // Reset states and clear sets
-    manhattan=true;bfs = false; dfs = false; astar = false; dikstra = false;
+// pour greedy
+const startButtonGreedyBFS = document.getElementById('startButtonGreedyBFS');
+startButtonGreedyBFS.addEventListener('click', () => {
+    dfs = false; bfs = false; astar = false; dikstra = false; greedy = true;
     visitedXY.clear();
     solutionPath = [];
 
-    const { path, time } = solveMazeManhattan();
+    const { path, time } = solveMazeGreedyBestFirst();
     solutionPath = path;
-    document.getElementById('timerManhattan').textContent = time + "ms";
+
+    console.log('Solution Path pour greedy:', path);
+    document.getElementById('timerGreedy').textContent = time + "ms";
     updateIA();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
