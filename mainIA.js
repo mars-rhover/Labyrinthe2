@@ -505,7 +505,7 @@ function solveMazeGreedyBestFirst() {
     const startTime = performance.now();
 
     while (openSet.length > 0) {
-        // Trier l'ensemble ouvert en fonction de la distance heuristique à la sortie
+        // trier l'ensemble ouvert en fonction de la distance heuristique à la sortie
         openSet.sort((a, b) => heuristic(a.x, a.y) - heuristic(b.x, b.y));
 
         const current = openSet.shift();
@@ -524,19 +524,17 @@ function solveMazeGreedyBestFirst() {
             closedSet.add(currentPos);
             visitedXY.add(currentPos);
 
-            // Vérifier les cellules adjacentes (haut, bas, gauche, droite)
             const directions = [
-                { dx: 0, dy: -1 }, // haut
-                { dx: 0, dy: 1 },  // bas
-                { dx: -1, dy: 0 }, // gauche
-                { dx: 1, dy: 0 }   // droite
+                { dx: 0, dy: -1 },
+                { dx: 0, dy: 1 }, 
+                { dx: -1, dy: 0 }, 
+                { dx: 1, dy: 0 }  
             ];
 
             for (const dir of directions) {
                 const nextX = x + dir.dx;
                 const nextY = y + dir.dy;
-
-                // Vérifier si la cellule suivante est dans les limites
+                
                 if (
                     nextX >= 0 &&
                     nextX < mazeArray[0].length &&
