@@ -160,7 +160,7 @@ function updateIA() {
         
         console.log("Drawing solution");
         drawSolutionPath(solutionPath);
-    }, visitedXY.size * 40); // Adjust the delay time here (in milliseconds)
+    }, visitedXY.size * 20); // Adjust the delay time here (in milliseconds)
 }
 
 

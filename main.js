@@ -11,6 +11,7 @@ const form = document.getElementById("formLabyrinthe").addEventListener("submit"
 
 
 let endGame=false;
+let firstMovement=false;
 
 let mazeHumain;
 let mazeIA;
@@ -90,8 +91,13 @@ function update() {
     endGame = true;
     showWinnerModal();
 } else {
-    updateTimerHumain();
-    endGame = false;
+    if(firstMovement==true && endGame==false){
+        updateTimerHumain();
+        console.log("first movement detected")
+    }
+    //updateTimerHumain();
+   
+   // endGame = false;
 }
    
     

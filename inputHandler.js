@@ -1,8 +1,10 @@
-document.addEventListener("keydown", function(e){ // Code sers à bouger et imp aussi le collision manager 
+document.addEventListener("keydown", function(e){ // Code sers à bouger et implemente aussi le collision manager 
     //A OPTIMISER
+
 
     if (e.code == "ArrowUp"){
         rowNum = rowNum -1
+        firstMovement=true;
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
             y = y - roadWidth  
@@ -18,6 +20,7 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
     if (e.code == "ArrowDown"){
         
         rowNum = rowNum +1
+        firstMovement=true;
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
             y = y + roadWidth
@@ -32,6 +35,7 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
     }
     if (e.code == "ArrowRight"){
         colNum = colNum +1
+        firstMovement=true;
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
             x = x + roadWidth
@@ -50,6 +54,7 @@ document.addEventListener("keydown", function(e){ // Code sers à bouger et imp 
 
     if (e.code == "ArrowLeft"){
         colNum = colNum -1
+        firstMovement=true;
         console.log(rowNum, colNum)
         if (mazeArray[rowNum][colNum]===0){
             x = x - roadWidth //change display position of yellow square

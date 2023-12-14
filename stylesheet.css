@@ -140,11 +140,12 @@
   width: 100px;
   height: 30px;
   margin-top: 10px;
+  border-radius: 5px;
 }
 #buttonStart {
   background-color: gold; /* Example color */
   width: 100px;
-  height: 70px;
+  height: 60px;
   margin-top: 10px; /* Add some space above the button */
 }
 
