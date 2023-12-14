@@ -84,13 +84,15 @@ function updateTimerHumain() {
   }
 
 function update() {
-    if ((inputDifficulty==='3' && colNum===50 )|| (inputDifficulty==='2' && colNum===29) || (inputDifficulty==='1' && colNum===9)) {
-        endGame=true;
-    }else{
-        updateTimerHumain() 
-        endGame=false;
-    }
-    console.log(endGame)
+   if ((inputDifficulty === '3' && colNum === 50) || 
+    (inputDifficulty === '2' && colNum === 29) || 
+    (inputDifficulty === '1' && colNum === 9)) {
+    endGame = true;
+    showWinnerModal();
+} else {
+    updateTimerHumain();
+    endGame = false;
+}
    
     
   
@@ -100,3 +102,37 @@ function update() {
     requestAnimationFrame(update)
 }
 
+// Get the modal
+var modal = document.getElementById("winnerModal");
+
+// Get the buttons
+var continueButton = document.getElementById("continueButton");
+var homeButton = document.getElementById("homeButton");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+
+
+// When the user clicks on "Continue", close the modal
+continueButton.onclick = function() {
+    window.location.href = 'Myindex.html';
+}
+
+// When the user clicks on "Home", redirect to index.html
+homeButton.onclick = function() {
+  window.location.href = 'index.html';
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Function to show the modal
+function showWinnerModal() {
+  modal.style.display = "flex";
+}

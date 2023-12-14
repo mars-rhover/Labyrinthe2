@@ -1,29 +1,112 @@
-.split {
-    height: 100%;
-    width: 50%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    overflow-x: hidden;
-    padding-top: 10px;
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 10; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0); /* Black w/ opacity */
+  
+  padding-top: 60px; /* Location of the box */
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: rgba(0, 0, 0) !important;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #c41919;
+  width: 80%;
+  max-width: 500px; /* Could be more or less, depending on screen size */
+  text-align: center;
+  background: #000; /* Black background for the content */
+  color: rgb(189, 10, 10);
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Rotating maze animation */
+@keyframes rotateMaze {
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.maze-3d img {
+  animation: rotateMaze 10s infinite linear;
+  height: 100px; /* Adjust as needed */
+}
+
+
+
+
+#title-container {
+  height: 20%;
+  background-color: #111;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#title-container h1 {
+  
+  margin: 4%;
+}
+
+
+
+
+.split {
+  height: 80%; /* Adjust height to account for the new title div */
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 20%; /* Start below the title div */
+  overflow-x: hidden;
+  padding-top: 10px;
+}
+
   
   /* Control the left side */
   .left {
     left: 0;
+    
     background-color: #111;
   }
   
   /* Control the right side */
   .right {
     right: 0;
-    background-color: paleturquoise;
+    background-color:  #111;
   }
   
   /* If you want the content centered horizontally and vertically */
   .centered {
     position: absolute;
-    top: 43%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -31,10 +114,13 @@
   
 
   .centered img {
-    width: 150px;
+    width: 0px; /* Adjust the size of the maze image */
     border-radius: 50%;
-  }
-
+}
+#top{
+  height:30px;
+  background-color: aqua;
+}
   /* Style for the starter page */
   .center { 
     margin: auto;
@@ -46,6 +132,25 @@
 }
 .center-vertically{
     margin-top: 2%;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     text-align: center;
+}
+.ctl{
+  background-color: gold;
+  width: 100px;
+  height: 30px;
+  margin-top: 10px;
+}
+#buttonStart {
+  background-color: gold; /* Example color */
+  width: 100px;
+  height: 70px;
+  margin-top: 10px; /* Add some space above the button */
+}
+
+#continueButton, #homeButton{ 
+  background-color: gold; /* Example color */
+  width: 200px;
+  height: 70px;
+  align-self: center;
 }

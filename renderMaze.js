@@ -1,22 +1,27 @@
 let mazeWalls=[];
 
 
+let wallImage = new Image();
+wallImage.src = 'handpaintedwall2.png';
 
 
 
-
-function renderMazeHumain(ctx, mazeArray) {
+function renderMaze(ctx, mazeArray) {
   for (let i = 0; i < mazeArray.length; i++) {
     for (let j = 0; j < mazeArray[i].length; j++) {
-
-      let wall = {}
+      let wall = {};
       ctx.beginPath();
-      ctx.rect(j * roadWidth, i * roadHeight, roadWidth, roadHeight)
-      ctx.fillStyle = mazeArray[i][j] === 0 ? 'white' : '#3581fc';
-      ctx.fill();
-      ctx.closePath()
+      ctx.rect(j * roadWidth, i * roadHeight, roadWidth, roadHeight);
 
-      //Array to store position of walls 
+      if (mazeArray[i][j] === 0) {
+        ctx.fillStyle = 'white';
+        ctx.fill();
+      } else {
+        ctx.drawImage(wallImage, j * roadWidth, i * roadHeight, roadWidth, roadHeight);
+      }
+
+      ctx.closePath();
+
       if (mazeArray[i][j] == 1) {
         wall.xcol = i;
         wall.ycol = j;
@@ -24,32 +29,17 @@ function renderMazeHumain(ctx, mazeArray) {
         wall.startYPos = i * roadWidth;
         mazeWalls.push(wall);
       }
-
     }
   }
+}
+
+// Call renderMazeHumain and renderMazeIA with renderMaze
+function renderMazeHumain(ctx, mazeArray) {
+  renderMaze(ctx, mazeArray);
 }
 
 function renderMazeIA(ctx, mazeArray) {
-  for (let i = 0; i < mazeArray.length; i++) {
-    for (let j = 0; j < mazeArray[i].length; j++) {
-
-      let wall = {}
-      ctx.beginPath();
-      ctx.rect(j * roadWidth, i * roadHeight, roadWidth, roadHeight)
-      ctx.fillStyle = mazeArray[i][j] === 0 ? 'white' : '#3581fc';
-      ctx.fill();
-      ctx.closePath()
-
-      //Array to store position of walls 
-      if (mazeArray[i][j] == 1) {
-        wall.xcol = i;
-        wall.ycol = j;
-        wall.startXPos = j * roadWidth;
-        wall.startYPos = i * roadWidth;
-        mazeWalls.push(wall);
-      }
-
-    }
-  }
+  renderMaze(ctx, mazeArray);
 }
+
 
