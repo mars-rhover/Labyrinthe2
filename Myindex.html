@@ -18,7 +18,7 @@
 .maze-3d {
     width: 150px;
     height: 150px;
-    margin: 0 auto 20px;
+    margin: 0 auto 10px;
     perspective: 1000px;
 }
 
@@ -96,6 +96,11 @@
                                 <option value="auto">Générer</option>
                             </select>
                         </div>
+                        <div class="col" style="color:aliceblue">
+                            <!-- Taille du labyrinthe -->
+                            <input type="number" name="mazeSize" class="form-control" placeholder="Taille (10-50)" min="10" max="50" required>
+                        </div>
+                        
 
                         <!--Timer -->
                         

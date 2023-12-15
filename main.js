@@ -7,10 +7,15 @@ const ctx = canvas.getContext('2d')
 
 let mazeArray = [];
 
+let mazeSize ;
+let mazeWidth ;
+let mazeHeight ;
+
 const form = document.getElementById("formLabyrinthe").addEventListener("submit", formSubmit);
 
 
 let endGame=false;
+let firstMovement=false;
 
 let mazeHumain;
 let mazeIA;
@@ -31,14 +36,22 @@ let inputDifficulty=0;
 
 function formSubmit(event) {
 
-    const inputs = document.getElementById("formLabyrinthe").elements;
-     inputUsername = inputs[0].value;
-     inputDifficulty = inputs[1].value;
+  event.preventDefault();
+
+  const inputs = document.getElementById("formLabyrinthe").elements;
   
+  inputUsername = inputs["username"].value;
+  inputDifficulty = inputs["difficulty"].value;
+  mazeSize = inputs["mazeSize"].valueAsNumber; // Récupérer la taille du labyrinthe
 
-    mazeDifficulty(inputDifficulty);
-
-    event.preventDefault();
+  if (inputDifficulty === "auto") {
+      // pour être sûr que la taille est dans les limites
+      mazeWidth = Math.max(10, Math.min(mazeSize, 50));
+      mazeHeight = mazeWidth;
+      mazeDifficulty(inputDifficulty);
+  } else {
+      mazeDifficulty(inputDifficulty);
+  }
 
     roadWidth = 600 / mazeArray.length
     roadHeight = 600 / mazeArray.length
@@ -66,9 +79,7 @@ function mazeDifficulty(inputDifficulty) {
     } else if (inputDifficulty === "3") {
         mazeArray = mazeArray51
     } else if (inputDifficulty === "auto") {
-      let width = 15;  
-      let height = 15;
-      mazeArray = generateMaze(width, height);
+      mazeArray = generateMaze(mazeWidth, mazeHeight);
   }
 }
 
@@ -177,12 +188,14 @@ function update() {
     endGame = true;
     showWinnerModal();
 } else {
+  if(firstMovement==true && endGame==false){
     updateTimerHumain();
-    endGame = false;
+    console.log("first movement detected")
 }
-   
-    
-  
+//updateTimerHumain();
+
+// endGame = false;
+}
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     renderMazeHumain(ctx, mazeArray)
     draw(x, y, endPositionX, endPositionY);

@@ -37,7 +37,7 @@ function getExitPosition(inputDifficulty) {
         exit = { x: 50, y: 49 };
     }
     else if (inputDifficulty === 'auto') {
-        exit = { x: 14, y: 15 - 2 };
+        exit = { x: mazeWidth -1 , y: mazeHeight - 2 };
         console.log("auto");
     }
     return exit;
