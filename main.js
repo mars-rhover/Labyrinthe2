@@ -7,6 +7,10 @@ const ctx = canvas.getContext('2d')
 
 let mazeArray = [];
 
+let mazeSize ;
+let mazeWidth ;
+let mazeHeight ;
+
 const form = document.getElementById("formLabyrinthe").addEventListener("submit", formSubmit);
 
 
@@ -32,16 +36,22 @@ let inputDifficulty=0;
 
 function formSubmit(event) {
 
+  event.preventDefault();
 
-
-    const inputs = document.getElementById("formLabyrinthe").elements;
-     inputUsername = inputs[0].value;
-     inputDifficulty = inputs[1].value;
+  const inputs = document.getElementById("formLabyrinthe").elements;
   
+  inputUsername = inputs["username"].value;
+  inputDifficulty = inputs["difficulty"].value;
+  mazeSize = inputs["mazeSize"].valueAsNumber; // Récupérer la taille du labyrinthe
 
-    mazeDifficulty(inputDifficulty);
-
-    event.preventDefault();
+  if (inputDifficulty === "auto") {
+      // pour être sûr que la taille est dans les limites
+      mazeWidth = Math.max(10, Math.min(mazeSize, 50));
+      mazeHeight = mazeWidth;
+      mazeDifficulty(inputDifficulty);
+  } else {
+      mazeDifficulty(inputDifficulty);
+  }
 
     roadWidth = 600 / mazeArray.length
     roadHeight = 600 / mazeArray.length
@@ -56,7 +66,6 @@ function formSubmit(event) {
     colNum= 0;
     rowNum= 1;
 
-
     updateIA()
     update();
 
@@ -69,9 +78,97 @@ function mazeDifficulty(inputDifficulty) {
         mazeArray = mazeArray30
     } else if (inputDifficulty === "3") {
         mazeArray = mazeArray51
-    }
+    } else if (inputDifficulty === "auto") {
+      mazeArray = generateMaze(mazeWidth, mazeHeight);
+  }
 }
 
+function generateMaze(width, height) {
+  let maze;
+  let pathExists = false;
+
+  while (!pathExists) {
+      // Initialiser le labyrinthe avec des murs
+      maze = Array(height).fill().map(() => Array(width).fill(1));
+
+      function carve(x, y) {
+          const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+          maze[y][x] = 0;
+
+          shuffleArray(directions);
+
+          for (let [dx, dy] of directions) {
+              const newX = x + dx * 2, newY = y + dy * 2;
+              if (newX >= 0 && newY >= 0 && newX < width && newY < height && maze[newY][newX] === 1) {
+                  maze[y + dy][x + dx] = 0;
+                  carve(newX, newY);
+              }
+          }
+      }
+
+      // Mélanger un tableau
+      function shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+          }
+      }
+
+      carve(1, 1); // Commencez à partir de la position (1,1)
+
+      // Définir les points d'entrée et de sortie comme des espaces vides APRES la sculpture
+      maze[1][0] = 0; // Point d'entrée
+      maze[height - 2][width - 1] = 0; // Point de sortie
+
+      // Vérifier si un chemin existe entre l'entrée et la sortie
+      pathExists = checkPathExists(maze, {x: 1, y: 1}, {x: width - 2, y: height - 2});
+  }
+
+  return maze;
+}
+
+
+function checkPathExists(maze, start, end) {
+  let rows = maze.length;
+  let cols = maze[0].length;
+  let visited = Array.from(Array(rows), () => new Array(cols).fill(false));
+  let queue = [];
+
+  // Directions: haut, bas, gauche, droite
+  let dRow = [-1, 1, 0, 0];
+  let dCol = [0, 0, -1, 1];
+
+  // Marquer le point de départ comme visité et l'ajouter à la queue
+  visited[start.y][start.x] = true;
+  queue.push(start);
+
+  while (queue.length > 0) {
+      let current = queue.shift();
+
+      // Si le point de sortie est atteint
+      if (current.x === end.x && current.y === end.y) {
+          return true;
+      }
+
+      // Explorer les directions adjacentes
+      for (let i = 0; i < 4; i++) {
+          let adjRow = current.y + dRow[i];
+          let adjCol = current.x + dCol[i];
+
+          // Vérifier la validité, si non visité et pas un mur
+          if (isValid(adjRow, adjCol, rows, cols) && maze[adjRow][adjCol] === 0 && !visited[adjRow][adjCol]) {
+              visited[adjRow][adjCol] = true;
+              queue.push({ x: adjCol, y: adjRow });
+          }
+      }
+  }
+
+  return false;
+}
+
+function isValid(row, col, rows, cols) {
+  return row >= 0 && row < rows && col >= 0 && col < cols;
+}
 
 function draw(x, y, endPositionX, endPositionY) {
     ctx.fillStyle = '#F9DC5C'
@@ -87,21 +184,18 @@ function updateTimerHumain() {
 function update() {
    if ((inputDifficulty === '3' && colNum === 50) || 
     (inputDifficulty === '2' && colNum === 29) || 
-    (inputDifficulty === '1' && colNum === 9)) {
+    (inputDifficulty === '1' && colNum === 9) || (inputDifficulty === 'auto' && colNum === 14)) {
     endGame = true;
     showWinnerModal();
 } else {
-    if(firstMovement==true && endGame==false){
-        updateTimerHumain();
-        console.log("first movement detected")
-    }
-    //updateTimerHumain();
-   
-   // endGame = false;
+  if(firstMovement==true && endGame==false){
+    updateTimerHumain();
+    console.log("first movement detected")
 }
-   
-    
-  
+//updateTimerHumain();
+
+// endGame = false;
+}
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     renderMazeHumain(ctx, mazeArray)
     draw(x, y, endPositionX, endPositionY);

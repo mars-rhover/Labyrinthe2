@@ -1,6 +1,5 @@
-document.addEventListener("keydown", function(e){ // Code sers à bouger et implemente aussi le collision manager 
+document.addEventListener("keydown", function(e){ // Code sers à bouger et imp aussi le collision manager 
     //A OPTIMISER
-
 
     if (e.code == "ArrowUp"){
         rowNum = rowNum -1

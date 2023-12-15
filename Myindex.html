@@ -93,8 +93,14 @@
                                 <option value="1">Easy</option>
                                 <option value="2">Medium</option>
                                 <option value="3">Hard</option>
+                                <option value="auto">Générer</option>
                             </select>
                         </div>
+                        <div class="col" style="color:aliceblue">
+                            <!-- Taille du labyrinthe -->
+                            <input type="number" name="mazeSize" class="form-control" placeholder="Taille (10-50)" min="10" max="50" required>
+                        </div>
+                        
 
                         <!--Timer -->
                         
@@ -123,18 +129,18 @@
         <div class="centered">
         
 
-            <h2 style="color: aliceblue;">Algorithme IA</h2>
+            <h2 style="color: aliceblue;">ALGORITHME IA</h2>
 
             <div class="container text-center" id="buttonsIA">
                 <div class="row align-items-center">
                     <div class="col" style="color:rgb(171, 51, 155)">
-                        <button class="ctl" id="startButtonIA" class="btn btn-primary" type="button">BFS</button>
+                        <button class="ctl" id="startButtonIA" class="btn btn-primary" type="button">Start BFS</button>
                         </button>
                         <div id="timerBFS">Temps BFS : <span id="timeBFS">0s</span></div>
                     </div>
 
                     <div class="col" style="color:rgb(171, 51, 155)">
-                        <button class="ctl" id="startButtonDFS" class="btn btn-primary" type="button">DFS</button>
+                        <button class="ctl" id="startButtonDFS" class="btn btn-primary" type="button">Start DFS</button>
                         </button>
                         <div id="timerDFS">Temps DFS : <span id="timeDFS">0s</span></div>
                     </div>
@@ -152,11 +158,10 @@
                     </div>
 
                     <div class="col" style="color:rgb(171, 51, 155)">
-                        <button class="ctl"  id="startButtonManhattan" class="btn btn-primary" type="button"> Manhattan</button>
+                        <button class="ctl"  id="startButtonGreedyBFS" class="btn btn-primary" type="button"> GreedyBFS </button>
                         </button>
-                        <div id="timerManhattan">Temps  : <span id="timerManhattan">0s</span></div>
+                        <div id="timerGreedy">Temps  : <span id="timerGreedy">0s</span></div>
                     </div>
-                   
                 </div>
             </div>
             <canvas id="canvasRight" height="600px" width="600px"></canvas>
