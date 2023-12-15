@@ -381,6 +381,7 @@ function solveMazeDijkstra() {
         const currentPos = `${x}-${y}`;
         if (!visited.has(currentPos) && !isWall(x * roadWidth, y * roadHeight)) {
             visited.add(currentPos);
+            console.log(currentPos);
             visitedXY.add(currentPos);
 
             // Check adjacent cells (up, down, left, right)
