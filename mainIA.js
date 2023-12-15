@@ -63,10 +63,7 @@ function isWall(x, y) {
     return false; // No collision
 }
 
-
 //---------------------------------------------------------------------------------------------
-
-
 
 // painting and updating maze
 
@@ -206,7 +203,7 @@ function solveMazeBFS() {
             visited.add(`${x}-${y}`);
             visitedXY.add(`${x}-${y}`);
 
-
+            document.getElementById("visitedBFS").innerHTML = visitedXY.size ;
 
 
             // Check adjacent cells (up, down, left, right)
@@ -266,6 +263,8 @@ function solveMazeDFS() {
             visited.add(`${x}-${y}`);
             visitedXY.add(`${x}-${y}`);
 
+            document.getElementById("visitedDFS").innerHTML = visitedXY.size ;
+
             // Check adjacent cells (up, down, left, right)
             const directions = [
                 { dx: 0, dy: -1 }, // up
@@ -306,6 +305,7 @@ function solveMazeAStar() {
     const openSet = [{ x: getEnterPosition().x, y: getEnterPosition().y, path: [], f: 0 }];
     const closedSet = new Set();
     const startTime = performance.now();
+
     while (openSet.length > 0) {
         openSet.sort((a, b) => a.f - b.f); 
         const current = openSet.shift();
@@ -322,6 +322,8 @@ function solveMazeAStar() {
         if (!closedSet.has(currentPos) && !isWall(x * roadWidth, y * roadHeight)) {
             closedSet.add(currentPos);
             visitedXY.add(`${x}-${y}`);
+            
+            document.getElementById("visitedA").innerHTML = visitedXY.size ;
 
             // Check adjacent cells (up, down, left, right)
             const directions = [
@@ -383,6 +385,8 @@ function solveMazeDijkstra() {
             visited.add(currentPos);
             console.log(currentPos);
             visitedXY.add(currentPos);
+
+            document.getElementById("visitedD").innerHTML = visitedXY.size ;
 
             // Check adjacent cells (up, down, left, right)
             const directions = [
@@ -523,6 +527,8 @@ function solveMazeGreedyBestFirst() {
         if (!closedSet.has(currentPos) && !isWall(x * roadWidth, y * roadHeight)) {
             closedSet.add(currentPos);
             visitedXY.add(currentPos);
+
+            document.getElementById("visitedG").innerHTML = visitedXY.size ;
 
             const directions = [
                 { dx: 0, dy: -1 },
